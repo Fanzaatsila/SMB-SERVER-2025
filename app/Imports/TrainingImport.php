@@ -10,7 +10,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
-use Maatwebsite\Excel\Concerns\SkipsFailures;
+use Maatwebsite\Excel\Validators\Failure;
 use Carbon\Carbon;
 
 /**
@@ -34,7 +34,17 @@ use Carbon\Carbon;
  */
 class TrainingImport implements ToModel, WithHeadingRow, WithValidation, SkipsEmptyRows, SkipsOnFailure
 {
-    use SkipsFailures;
+    protected $failures = [];
+
+    public function onFailure(Failure ...$failures)
+    {
+        $this->failures = $failures;
+    }
+
+    public function failures()
+    {
+        return collect($this->failures);
+    }
 
     /**
      * Parse flexible date formats
