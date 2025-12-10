@@ -1,0 +1,70 @@
+/* Activity/Gallery Section Styles */
+
+#activity-filters .nav-link {
+    background-color: #f0f0f0;
+    color: #333;
+    border-radius: 25px;
+    padding: 8px 20px;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+#activity-filters .nav-link:hover {
+    background-color: #e0e0e0;
+    transform: translateY(-2px);
+}
+
+#activity-filters .nav-link.active {
+    background-color: #00B2D6;
+    color: white;
+    border-color: #00B2D6;
+}
+
+.activity-carousel-wrapper {
+    max-width: 100%;
+    margin: 0 auto;
+    position: relative;
+}
+
+.activity-carousel-overflow {
+    overflow: hidden;
+    margin: 0 70px;
+}
+
+.activity-carousel-container {
+    padding: 20px 0;
+    margin: 0 auto;
+}
+
+.activity-carousel {
+    transition: transform 0.5s ease;
+    display: flex;
+}
+
+.activity-item {
+    width: 445px;
+    min-width: 445px;
+    max-width: 445px;
+    flex-shrink: 0;
+}
+
+@media (max-width: 992px) {
+    .activity-item {
+        width: 280px;
+        min-width: 280px;
+        max-width: 280px;
+    }
+}
+
+@media (max-width: 576px) {
+    .activity-item {
+        width: 250px;
+        min-width: 250px;
+        max-width: 250px;
+    }
+    
+    .activity-carousel-container {
+        padding: 20px 50px;
+    }
+}

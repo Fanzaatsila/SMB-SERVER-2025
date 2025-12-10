@@ -1,0 +1,78 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+}
+
+.services-section {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.section-title {
+    font-size: 32px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.section-subtitle {
+    font-size: 20px;
+    font-weight: bold;
+    color: #152B5B;
+    margin-bottom: 30px;
+}
+
+.services-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.service-item {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s, color 0.3s;
+}
+
+.service-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Ubah warna ikon dan judul saat hover */
+.service-item:hover .service-icon {
+    filter: brightness(0) invert(38%) sepia(100%) saturate(584%) hue-rotate(172deg) brightness(92%) contrast(86%);
+}
+
+.service-item:hover h3 {
+    color: #00b2d6;
+}
+
+.service-icon {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 15px;
+    transition: filter 0.3s;
+}
+
+.service-item h3 {
+    font-weight: bold;
+    font-size: 20px;
+    color: #152B5B;
+    margin-bottom: 10px;
+    transition: color 0.3s;
+}
+
+.service-item p {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.6;
+}

@@ -1,0 +1,106 @@
+/* Brochure Section Styles */
+
+#brochure-filters .nav-link {
+    background-color: #f0f0f0;
+    color: #333;
+    border-radius: 25px;
+    padding: 8px 20px;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+#brochure-filters .nav-link:hover {
+    background-color: #e0e0e0;
+    transform: translateY(-2px);
+}
+
+#brochure-filters .nav-link.active {
+    background-color: #00B2D6;
+    color: white;
+    border-color: #00B2D6;
+}
+
+.brochure-carousel-wrapper {
+    max-width: 100%;
+    margin: 0 auto;
+    position: relative;
+}
+
+.brochure-carousel-overflow {
+    overflow: hidden;
+    margin: 0 70px;
+}
+
+.brochure-carousel-container {
+    padding: 20px 0;
+    margin: 0 auto;
+}
+
+.brochure-carousel {
+    transition: transform 0.5s ease;
+    display: flex;
+}
+
+.brochure-item {
+    width: 445px;
+    min-width: 445px;
+    max-width: 445px;
+    flex-shrink: 0;
+}
+
+.carousel-btn {
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #00B2D6;
+    color: white;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.carousel-btn:hover {
+    background-color: #0096b8;
+    transform: translateY(-50%) scale(1.1);
+}
+
+.carousel-btn-prev {
+    left: 10px;
+}
+
+.carousel-btn-next {
+    right: 10px;
+}
+
+@media (max-width: 992px) {
+    .brochure-item {
+        width: 280px;
+        min-width: 280px;
+        max-width: 280px;
+    }
+}
+
+@media (max-width: 576px) {
+    .brochure-item {
+        width: 250px;
+        min-width: 250px;
+        max-width: 250px;
+    }
+    
+    .brochure-carousel-container {
+        padding: 20px 50px;
+    }
+    
+    .carousel-btn {
+        width: 35px;
+        height: 35px;
+    }
+}

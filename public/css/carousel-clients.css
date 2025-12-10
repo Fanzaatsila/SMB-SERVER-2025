@@ -1,0 +1,72 @@
+.carousel-klien {
+    margin: 0;
+    width: 100%;
+    display: flex;
+    overflow: hidden;
+    position: relative;
+    padding: 20px 0;
+}
+
+.carousel-klien::-webkit-scrollbar {
+    display: none; 
+}
+
+.group-klien {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1em;
+    animation: scroll-left 30s infinite linear;
+    width: max-content;
+}
+
+.carousel-klien:hover .group-klien {
+    animation-play-state: paused;
+}
+
+/* Carousel Kanan */
+.group-klien-right {
+    animation: scroll-right 30s infinite linear;
+}
+
+.carousel-klien-right {
+    margin-top: 0;
+    padding-top: 0;
+}
+
+.carousel-klien:hover .group-klien-right {
+    animation-play-state: paused;
+}
+
+.card-klien{
+    display: flex;
+    gap: 1em;
+}
+
+.card-klien img {
+    flex: 0 0 250px;
+    height: 180px;
+    object-fit: contain;
+    background: white;
+    padding: 1.5em;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+@keyframes scroll-left {
+    from { 
+        transform: translateX(0);
+    }
+    to { 
+        transform: translateX(-50%);
+    }
+}
+
+@keyframes scroll-right {
+    from { 
+        transform: translateX(-50%);
+    }
+    to { 
+        transform: translateX(0);
+    }
+}
