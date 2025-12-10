@@ -481,7 +481,7 @@ Klien Kami Section
 <!--==========================
 Alur Pelatihan Section
 ============================-->
-<section id="alur-pelatihan" class="py-5 bg-white">
+<!-- <section id="alur-pelatihan" class="py-5 bg-white">
     <div class="container">
         <header class="section-header wow fadeInUp">
             <h3 class="section-title">Alur Pelatihan</h3>
@@ -498,7 +498,7 @@ Alur Pelatihan Section
             </div>
         </div>
     </div>
-</section>
+</section> -->
 
 <!--==========================
 Gallery Section
