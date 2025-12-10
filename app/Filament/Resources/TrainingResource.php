@@ -14,6 +14,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Models\City;
 use App\Models\TrainingType;
+use App\Imports\TrainingImport;
+use Maatwebsite\Excel\Facades\Excel;
+use Filament\Notifications\Notification;
 
 class TrainingResource extends Resource
 {
@@ -94,6 +97,93 @@ class TrainingResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+            ])
+            ->headerActions([
+                Tables\Actions\Action::make('importExcel')
+                    ->label('Import Excel')
+                    ->icon('heroicon-o-arrow-up-tray')
+                    ->color('success')
+                    ->form([
+                        Forms\Components\FileUpload::make('file')
+                            ->label('File Excel')
+                            ->disk('local')
+                            ->directory('imports')
+                            ->acceptedFileTypes(['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel', 'text/csv'])
+                            ->required()
+                            ->helperText('Upload file Excel (.xlsx atau .xls) - Format tanggal: YYYY-MM-DD (contoh: 2026-01-06)')
+                    ])
+                    ->action(function (array $data) {
+                        try {
+                            // Filament saves to private disk by default
+                            // Path format: private/imports/filename.xlsx
+                            $relativePath = $data['file'];
+                            
+                            // Try multiple possible paths
+                            $possiblePaths = [
+                                storage_path('app/' . $relativePath),
+                                storage_path('app/private/' . str_replace('imports/', '', $relativePath)),
+                                storage_path('app/private/imports/' . basename($relativePath)),
+                            ];
+                            
+                            $filePath = null;
+                            foreach ($possiblePaths as $path) {
+                                if (file_exists($path)) {
+                                    $filePath = $path;
+                                    break;
+                                }
+                            }
+                            
+                            if (!$filePath) {
+                                Notification::make()
+                                    ->title('File tidak ditemukan')
+                                    ->body('Coba upload ulang file Excel Anda.')
+                                    ->danger()
+                                    ->send();
+                                return;
+                            }
+                            
+                            $import = new TrainingImport();
+                            Excel::import($import, $filePath);
+                            
+                            $failures = $import->failures();
+                            
+                            if ($failures->isNotEmpty()) {
+                                $errorMessages = [];
+                                foreach ($failures as $failure) {
+                                    $errorMessages[] = "Baris {$failure->row()}: " . implode(', ', $failure->errors());
+                                }
+                                
+                                Notification::make()
+                                    ->title('Import selesai dengan error')
+                                    ->body('Beberapa baris gagal diimport: ' . implode(' | ', array_slice($errorMessages, 0, 3)))
+                                    ->warning()
+                                    ->send();
+                            } else {
+                                Notification::make()
+                                    ->title('Import berhasil!')
+                                    ->body('Data pelatihan berhasil diimport dari Excel.')
+                                    ->success()
+                                    ->send();
+                            }
+                            
+                            // Clean up uploaded file
+                            if (file_exists($filePath)) {
+                                @unlink($filePath);
+                            }
+                        } catch (\Exception $e) {
+                            Notification::make()
+                                ->title('Import gagal')
+                                ->body('Error: ' . $e->getMessage())
+                                ->danger()
+                                ->send();
+                        }
+                    }),
+                Tables\Actions\Action::make('downloadTemplate')
+                    ->label('Download Template')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->color('info')
+                    ->url(fn () => asset('templates/template_pelatihan.xlsx'))
+                    ->openUrlInNewTab(),
             ]);
     }
 
