@@ -5,7 +5,7 @@ namespace App\Imports;
 use App\Models\Training;
 use App\Models\City;
 use App\Models\TrainingType;
-use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\ToModel as ToModelConcern;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
@@ -32,7 +32,7 @@ use Carbon\Carbon;
  * - DD-MM-YYYY (06-01-2026)
  * - Excel serial date number
  */
-class TrainingImport implements ToModel, WithHeadingRow, WithValidation, SkipsEmptyRows, SkipsOnFailure
+class TrainingImport implements ToModelConcern, WithHeadingRow, WithValidation, SkipsEmptyRows, SkipsOnFailure
 {
     protected $failures = [];
 
