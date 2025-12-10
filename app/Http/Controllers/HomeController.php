@@ -25,7 +25,23 @@ class HomeController extends Controller
             $trainings = Training::with(['trainingType', 'city'])
                 ->whereNotNull('start_date')
                 ->orderBy('start_date', 'asc')
-                ->get();
+                ->get()
+                ->map(function ($training) {
+                    // Ensure dates are in Y-m-d format without timezone conversion
+                    return [
+                        'id' => $training->id,
+                        'title' => $training->title,
+                        'description' => $training->description,
+                        'start_date' => $training->start_date instanceof \Carbon\Carbon 
+                            ? $training->start_date->format('Y-m-d') 
+                            : $training->start_date,
+                        'end_date' => $training->end_date instanceof \Carbon\Carbon 
+                            ? $training->end_date->format('Y-m-d') 
+                            : $training->end_date,
+                        'city' => $training->city,
+                        'training_type' => $training->trainingType,
+                    ];
+                });
             
             // Get all timetable types with their associated timetables
             $timetableTypes = TimetableType::with('timetables')->get();

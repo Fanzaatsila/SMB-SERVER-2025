@@ -17,6 +17,11 @@ class Training extends Model
         'city_id',
     ];
 
+    protected $casts = [
+        'start_date' => 'date:Y-m-d',
+        'end_date' => 'date:Y-m-d',
+    ];
+
     public function trainingType(): BelongsTo {
         return $this->belongsTo(TrainingType::class);
     }

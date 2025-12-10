@@ -161,21 +161,7 @@ function getTrainingsForDate(date) {
         const endDate = new Date(endYear, endMonth, endDay, 0, 0, 0, 0);
         const checkDate = new Date(checkYear, checkMonth, checkDay, 0, 0, 0, 0);
         
-        const isInRange = checkDate >= startDate && checkDate <= endDate;
-        
-        // Debug logging for 2026 data
-        if (startYear === 2026) {
-            console.log('=== Training Check ===');
-            console.log('Training:', training.title);
-            console.log('Range:', `${startYear}-${startMonth+1}-${startDay} to ${endYear}-${endMonth+1}-${endDay}`);
-            console.log('Checking:', `${checkYear}-${checkMonth+1}-${checkDay}`);
-            console.log('Start Date:', startDate.toLocaleDateString());
-            console.log('End Date:', endDate.toLocaleDateString());
-            console.log('Check Date:', checkDate.toLocaleDateString());
-            console.log('Match:', isInRange);
-        }
-        
-        return isInRange;
+        return checkDate >= startDate && checkDate <= endDate;
     });
 }
 

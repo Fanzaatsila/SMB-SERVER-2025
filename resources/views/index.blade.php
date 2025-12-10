@@ -646,10 +646,6 @@ CTA Section
     // Training data from Laravel
     const trainingsData = @json($trainings ?? []);
     
-    // Debug: Log training data
-    console.log('Total trainings:', trainingsData.length);
-    console.log('Training data:', trainingsData);
-    
     // Smooth scroll to calendar section
     function scrollToCalendar(event) {
         event.preventDefault();
