@@ -139,8 +139,11 @@ function renderCalendar() {
 
 function getTrainingsForDate(date) {
     return trainings.filter(training => {
-        const startDate = new Date(training.start_date);
-        const endDate = new Date(training.end_date);
+        // Parse date strings as local dates to avoid timezone issues
+        const startParts = training.start_date.split('-');
+        const endParts = training.end_date.split('-');
+        const startDate = new Date(startParts[0], startParts[1] - 1, startParts[2]);
+        const endDate = new Date(endParts[0], endParts[1] - 1, endParts[2]);
         
         // Reset time to compare dates only
         startDate.setHours(0, 0, 0, 0);
@@ -152,8 +155,11 @@ function getTrainingsForDate(date) {
 }
 
 function isMultiDayTraining(training) {
-    const startDate = new Date(training.start_date);
-    const endDate = new Date(training.end_date);
+    // Parse date strings as local dates to avoid timezone issues
+    const startParts = training.start_date.split('-');
+    const endParts = training.end_date.split('-');
+    const startDate = new Date(startParts[0], startParts[1] - 1, startParts[2]);
+    const endDate = new Date(endParts[0], endParts[1] - 1, endParts[2]);
     const diffTime = Math.abs(endDate - startDate);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     return diffDays > 1;
@@ -164,14 +170,20 @@ function showTrainingDetail(trainingId) {
     
     if (!training) return;
     
-    const startDate = new Date(training.start_date).toLocaleDateString('id-ID', {
+    // Parse date strings as local dates to avoid timezone issues
+    const startParts = training.start_date.split('-');
+    const endParts = training.end_date.split('-');
+    const startDate = new Date(startParts[0], startParts[1] - 1, startParts[2]);
+    const endDate = new Date(endParts[0], endParts[1] - 1, endParts[2]);
+    
+    const startDateFormatted = startDate.toLocaleDateString('id-ID', {
         weekday: 'long',
         year: 'numeric',
         month: 'long',
         day: 'numeric'
     });
     
-    const endDate = new Date(training.end_date).toLocaleDateString('id-ID', {
+    const endDateFormatted = endDate.toLocaleDateString('id-ID', {
         weekday: 'long',
         year: 'numeric',
         month: 'long',
@@ -186,8 +198,8 @@ function showTrainingDetail(trainingId) {
     const modalBody = `
         <div class="training-detail-item">
             <h5><i class="fa fa-calendar"></i> Tanggal Pelaksanaan</h5>
-            <p><strong>Mulai:</strong> ${startDate}</p>
-            <p><strong>Selesai:</strong> ${endDate}</p>
+            <p><strong>Mulai:</strong> ${startDateFormatted}</p>
+            <p><strong>Selesai:</strong> ${endDateFormatted}</p>
         </div>
         
         <div class="training-detail-item">
