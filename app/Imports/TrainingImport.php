@@ -5,12 +5,10 @@ namespace App\Imports;
 use App\Models\Training;
 use App\Models\City;
 use App\Models\TrainingType;
-use Maatwebsite\Excel\Concerns\ToModel as ToModelConcern;
+use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
-use Maatwebsite\Excel\Concerns\SkipsOnFailure;
-use Maatwebsite\Excel\Validators\Failure;
 use Carbon\Carbon;
 
 /**
@@ -32,20 +30,8 @@ use Carbon\Carbon;
  * - DD-MM-YYYY (06-01-2026)
  * - Excel serial date number
  */
-class TrainingImport implements ToModelConcern, WithHeadingRow, WithValidation, SkipsEmptyRows, SkipsOnFailure
+class TrainingImport implements ToModel, WithHeadingRow, WithValidation, SkipsEmptyRows
 {
-    protected $failures = [];
-
-    public function onFailure(Failure ...$failures)
-    {
-        $this->failures = $failures;
-    }
-
-    public function failures()
-    {
-        return collect($this->failures);
-    }
-
     /**
      * Parse flexible date formats
      */
@@ -156,12 +142,12 @@ class TrainingImport implements ToModelConcern, WithHeadingRow, WithValidation, 
     public function rules(): array
     {
         return [
-            '*.judul_pelatihan' => 'required|string|max:255',
-            '*.title' => 'required_without:*.judul_pelatihan|string|max:255',
-            '*.tanggal_awal' => 'required',
-            '*.start_date' => 'required_without:*.tanggal_awal',
-            '*.tanggal_akhir' => 'required',
-            '*.end_date' => 'required_without:*.tanggal_akhir',
+            '*.judul_pelatihan' => 'nullable|string|max:255',
+            '*.title' => 'nullable|string|max:255',
+            '*.tanggal_awal' => 'nullable',
+            '*.start_date' => 'nullable',
+            '*.tanggal_akhir' => 'nullable',
+            '*.end_date' => 'nullable',
         ];
     }
 }

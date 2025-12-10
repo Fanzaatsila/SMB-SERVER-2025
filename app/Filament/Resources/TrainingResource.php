@@ -115,7 +115,6 @@ class TrainingResource extends Resource
                     ->action(function (array $data) {
                         try {
                             // Filament saves to private disk by default
-                            // Path format: private/imports/filename.xlsx
                             $relativePath = $data['file'];
                             
                             // Try multiple possible paths
@@ -142,29 +141,13 @@ class TrainingResource extends Resource
                                 return;
                             }
                             
-                            $import = new TrainingImport();
-                            Excel::import($import, $filePath);
+                            Excel::import(new TrainingImport(), $filePath);
                             
-                            $failures = $import->failures();
-                            
-                            if ($failures->isNotEmpty()) {
-                                $errorMessages = [];
-                                foreach ($failures as $failure) {
-                                    $errorMessages[] = "Baris {$failure->row()}: " . implode(', ', $failure->errors());
-                                }
-                                
-                                Notification::make()
-                                    ->title('Import selesai dengan error')
-                                    ->body('Beberapa baris gagal diimport: ' . implode(' | ', array_slice($errorMessages, 0, 3)))
-                                    ->warning()
-                                    ->send();
-                            } else {
-                                Notification::make()
-                                    ->title('Import berhasil!')
-                                    ->body('Data pelatihan berhasil diimport dari Excel.')
-                                    ->success()
-                                    ->send();
-                            }
+                            Notification::make()
+                                ->title('Import berhasil!')
+                                ->body('Data pelatihan berhasil diimport dari Excel.')
+                                ->success()
+                                ->send();
                             
                             // Clean up uploaded file
                             if (file_exists($filePath)) {
