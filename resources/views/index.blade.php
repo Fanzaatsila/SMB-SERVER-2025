@@ -639,12 +639,16 @@ CTA Section
 </section>
 
 <!-- Calendar Styles -->
-<link rel="stylesheet" href="{{ asset('css/calendar.css') }}">
+<link rel="stylesheet" href="{{ asset('css/calendar.css') }}?v={{ time() }}">
 
 <!-- Calendar Scripts with inline data -->
 <script>
     // Training data from Laravel
     const trainingsData = @json($trainings ?? []);
+    
+    // Debug: Log training data
+    console.log('Total trainings:', trainingsData.length);
+    console.log('Training data:', trainingsData);
     
     // Smooth scroll to calendar section
     function scrollToCalendar(event) {
@@ -658,6 +662,6 @@ CTA Section
         }
     }
 </script>
-<script src="{{ asset('js/calendar.js') }}"></script>
+<script src="{{ asset('js/calendar.js') }}?v={{ time() }}"></script>
 
 @endsection

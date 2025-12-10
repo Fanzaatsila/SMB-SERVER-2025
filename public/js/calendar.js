@@ -138,19 +138,44 @@ function renderCalendar() {
 }
 
 function getTrainingsForDate(date) {
+    // Create a clean date object for comparison (YYYY-MM-DD format)
+    const checkYear = date.getFullYear();
+    const checkMonth = date.getMonth();
+    const checkDay = date.getDate();
+    
     return trainings.filter(training => {
         // Parse date strings as local dates to avoid timezone issues
         const startParts = training.start_date.split('-');
         const endParts = training.end_date.split('-');
-        const startDate = new Date(startParts[0], startParts[1] - 1, startParts[2]);
-        const endDate = new Date(endParts[0], endParts[1] - 1, endParts[2]);
         
-        // Reset time to compare dates only
-        startDate.setHours(0, 0, 0, 0);
-        endDate.setHours(0, 0, 0, 0);
-        date.setHours(0, 0, 0, 0);
+        const startYear = parseInt(startParts[0]);
+        const startMonth = parseInt(startParts[1]) - 1; // Month is 0-indexed
+        const startDay = parseInt(startParts[2]);
         
-        return date >= startDate && date <= endDate;
+        const endYear = parseInt(endParts[0]);
+        const endMonth = parseInt(endParts[1]) - 1;
+        const endDay = parseInt(endParts[2]);
+        
+        // Create date objects for comparison
+        const startDate = new Date(startYear, startMonth, startDay, 0, 0, 0, 0);
+        const endDate = new Date(endYear, endMonth, endDay, 0, 0, 0, 0);
+        const checkDate = new Date(checkYear, checkMonth, checkDay, 0, 0, 0, 0);
+        
+        const isInRange = checkDate >= startDate && checkDate <= endDate;
+        
+        // Debug logging for 2026 data
+        if (startYear === 2026) {
+            console.log('=== Training Check ===');
+            console.log('Training:', training.title);
+            console.log('Range:', `${startYear}-${startMonth+1}-${startDay} to ${endYear}-${endMonth+1}-${endDay}`);
+            console.log('Checking:', `${checkYear}-${checkMonth+1}-${checkDay}`);
+            console.log('Start Date:', startDate.toLocaleDateString());
+            console.log('End Date:', endDate.toLocaleDateString());
+            console.log('Check Date:', checkDate.toLocaleDateString());
+            console.log('Match:', isInRange);
+        }
+        
+        return isInRange;
     });
 }
 
