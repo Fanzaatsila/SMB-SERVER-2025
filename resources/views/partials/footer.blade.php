@@ -38,6 +38,9 @@
                     <li>
                         <a href="/tim" class="text-gray-300 hover:text-[#00B2D6] transition text-sm">Struktur Organisasi</a>
                     </li>
+                    <li>
+                        <a href="/kontak" class="text-gray-300 hover:text-[#00B2D6] transition text-sm">Kontak</a>
+                    </li>
                 </ul>
             </div>
 
