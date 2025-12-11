@@ -65,7 +65,7 @@
 
                         <div class="portfolio-item {{ $filterClass }} wow fadeInUp col-lg-4 col-md-6 col-sm-12" style="margin-bottom: 24px;">
                             <div class="activity-card" style="background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08); transition: all 0.3s ease; display: flex; flex-direction: column;">
-                                <div class="activity-image-wrapper" style="width: 100%; height: 280px; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                                <div class="activity-image-wrapper" style="width: 100%; height: 280px; padding: 20px; background: linear-gradient(135deg, #00B2D6 0%, #0096b8 100%); display: flex; align-items: center; justify-content: center; overflow: hidden;">
                                     <a href="{{ url('storage/' . $activity->image) }}" data-lightbox="portfolio" title="{{ $activity->title }}" style="display: flex; align-items: center; justify-content: center; width: 100%; height: 100%;">
                                         <img src="{{ url('storage/' . $activity->image) }}" 
                                              alt="{{ $activity->title }}"
