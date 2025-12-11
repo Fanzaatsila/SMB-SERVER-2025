@@ -131,7 +131,7 @@ Profile Section
                         <i class="fa fa-certificate"></i>
                     </div>
                     <h4 style="margin: 10px 0 15px 0; font-size: 1.2rem; color: #111; font-weight: bold;">Kualitas dan Reputasi</h4>
-                    <p style="color: #666; font-size: 0.95rem; line-height: 1.6;">Pelatihan dengan kualitas tinggi, sertifikasi resmi dari KEMNAKER RI dan BNSP, serta reputasi yang baik untuk meningkatkan kepercayaan diri dan kredibilitas Anda.</p>
+                    <p style="color: #666; font-size: 0.95rem; line-height: 1.6;">Pelatihan dengan kualitas tinggi, sertifikasi resmi dari BNSP, serta reputasi yang baik untuk meningkatkan kepercayaan diri dan kredibilitas Anda.</p>
                 </div>
                 <div class="feature-card" style="background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); text-align: center;">
                     <div style="font-size: 2.5rem; font-weight: bold; color: #28a745; margin-bottom: 15px;">

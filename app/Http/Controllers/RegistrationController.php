@@ -70,7 +70,7 @@ class RegistrationController extends Controller
         $encodedMessage = urlencode($message);
         
         // WhatsApp number
-        $whatsappNumber = '6282118464692';
+        $whatsappNumber = '6281220183537';
         
         // Redirect to WhatsApp
         $whatsappUrl = "https://wa.me/{$whatsappNumber}?text={$encodedMessage}";
