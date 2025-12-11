@@ -1046,43 +1046,12 @@
     </script>
     @yield('content')
     @include('partials.footer')
-    <!-- Tombol WhatsApp -->
-    <div class="whatsapp-chat" onclick="openPopup()">
-        <i class="fa fa-whatsapp"></i>
-    </div>
-    <!-- Popup -->
-    <div class="popup-overlay" id="popup">
-        <div class="popup-content">
-            <h2>Pilih Cara Pendaftaran</h2>
-            <!-- Link WhatsApp untuk online -->
-            <a href="https://wa.me/6281220183537/?text=Halo%20Saya%20Mendapatkan%20informasi%20Dari%20Website%20Untuk%20Melakukan%20Daftar%20Online%0A%0AFormulir%20Konfirmasi%20Peserta%20(Online)%0A%0ANama%20lengkap%20:%20%0ANo%20tlp/wa%20:%20%0ANama%20perusahan%20:%20%0APendidikan%20Terakhir%20:%20%0ALokasi%20Tambang%20Provinsi%20:%20%0ADiklat%20dan%20Sertifikasi%20yang%20akan%20diikuti%20:%20%0ATanggal%20diklat%20yang%20akan%20diikuti%20:%20"
-                target="_blank">
-                <i class="fa fa-whatsapp"></i> Daftar Online
-            </a>
-            <!-- Link WhatsApp untuk offline -->
-            <a href="https://wa.me/6281220183537/?text=Halo%20Saya%20Mendapatkan%20informasi%20Dari%20Website%20Untuk%20Melakukan%20Daftar%20Offline%0A%0AFormulir%20Konfirmasi%20Peserta%20(Offline)%0A%0ANama%20lengkap%20:%20%0ANo%20tlp/wa%20:%20%0ANama%20perusahan%20:%20%0APendidikan%20Terakhir%20:%20%0AJenis%20Kelamin%20:%20L%20/%20P%0ALokasi%20Tambang%20Provinsi%20:%20%0AKota%20diklat%20yg%20akan%20diikuti%20:%20%0AMenginap/tidakmenginap%20:%20%0AMerokok/tidak%20merokok%20:%20%0ADiklat%20dan%20Sertifikasi%20yang%20akan%20diikuti%20:%20%0ATanggal%20diklat%20yang%20akan%20diikuti%20:%20"
-                target="_blank">
-                <i class="fa fa-whatsapp"></i> Daftar Offline
-            </a>
-            <!-- Tombol untuk menutup popup -->
-            <button class="close-popup" onclick="closePopup()">Tutup</button>
-        </div>
-    </div>
     <!-- Back to Top Button -->
     <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
     <!-- Uncomment below i you want to use a preloader -->
     <div id="preloader"></div>
     <!-- JavaScript Libraries -->
-    <script>
-        // Fungsi untuk membuka popup
-        function openPopup() {
-            document.getElementById('popup').style.display = 'flex';
-        }
-        // Fungsi untuk menutup popup
-        function closePopup() {
-            document.getElementById('popup').style.display = 'none';
-        }
-    </script>
+    <script></script>
     <script src="{{ asset('lib/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('lib/jquery/jquery-migrate.min.js') }}"></script>
     <script src="{{ asset('lib/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
