@@ -33,13 +33,10 @@
                 <h4 class="text-white font-bold text-lg mb-4">Tentang Kami</h4>
                 <ul class="space-y-3">
                     <li>
-                        <a href="/profil" class="text-gray-300 hover:text-[#00B2D6] transition text-sm">Profil SMMB</a>
+                        <a href="/profil" class="text-gray-300 hover:text-[#00B2D6] transition text-sm">Profil SMB</a>
                     </li>
                     <li>
-                        <a href="/struktur-organisasi" class="text-gray-300 hover:text-[#00B2D6] transition text-sm">Struktur Organisasi</a>
-                    </li>
-                    <li>
-                        <a href="/tim" class="text-gray-300 hover:text-[#00B2D6] transition text-sm">Tim Tenaga Ahli</a>
+                        <a href="/tim" class="text-gray-300 hover:text-[#00B2D6] transition text-sm">Struktur Organisasi</a>
                     </li>
                 </ul>
             </div>
