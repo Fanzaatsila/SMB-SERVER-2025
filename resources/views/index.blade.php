@@ -177,13 +177,13 @@ Jadwal Pelatihan Calendar Section
     <div class="container">
         <header class="section-header wow fadeInUp text-center mb-5">
             <h2 style="font-size: 2.5rem; margin-bottom: 10px;">
-                <span style="color: #00B2D6; font-weight: bold;">Jadwal Pelatihan</span>
+                <span style="color: #00B2D6; font-weight: bold;">Jadwal Diklat Tahun 2026</span>
             </h2>
-            <!-- <h2 style="font-size: 2.5rem; margin-bottom: 15px;">
-                <span style="color: #152B5B; font-weight: bold;">Bulan Ini</span>
-            </h2> -->
+            <h2 style="font-size: 2.5rem; margin-bottom: 15px;">
+                <span style="color: #152B5B; font-weight: bold;">Dari Bulan Januari Sampai Desember 2026</span>
+            </h2>
             <p style="font-size: 1.1rem; color: #666; max-width: 800px; margin: 0 auto;">
-                Jadwal Diklat Tahun 2026 Online Offline dan Didaerah Bandung
+                Online , Offline di Bandung dan Offline Di Daerah
             </p>
         </header>
 
@@ -354,7 +354,7 @@ Jadwal Pelatihan Calendar Section
 Brochure Section
 ============================-->
 <section id="brochure" class="py-5 bg-white">
-    <div class="container">
+    <div class="container-fluid">
         <header class="section-header wow fadeInUp text-center mb-5">
             <h1 style="font-size: 1.5rem; margin-bottom: 10px;">
                 <span style="color: #00B2D6; font-weight: bold;">Brosur</span>
