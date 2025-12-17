@@ -780,10 +780,12 @@
     .brochure-carousel-overflow,
     .activity-carousel-overflow {
         overflow-x: auto !important;
+        overflow-y: visible !important;
         -webkit-overflow-scrolling: touch !important;
         scrollbar-width: none !important;
         -ms-overflow-style: none !important;
-        padding: 0 20px !important;
+        padding: 0 10px !important;
+        margin: 0 !important;
     }
     
     .brochure-carousel-overflow::-webkit-scrollbar,

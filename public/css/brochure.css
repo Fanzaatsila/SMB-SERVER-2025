@@ -90,13 +90,19 @@
 
 @media (max-width: 576px) {
     .brochure-item {
-        width: 250px;
-        min-width: 250px;
-        max-width: 250px;
+        width: 320px;
+        min-width: 320px;
+        max-width: 320px;
     }
     
     .brochure-carousel-container {
-        padding: 20px 50px;
+        padding: 10px 0;
+    }
+
+    .brochure-carousel-overflow {
+        margin: 0 10px;
+        overflow-x: auto;
+        overflow-y: visible;
     }
     
     .carousel-btn {
