@@ -246,8 +246,8 @@ Jadwal Pelatihan Calendar Section
 
         <!-- PDF Display -->
         <div class="mt-5 wow fadeInUp">
-            <div id="pdf-display" style="width: 100%; height: 600px; border: 1px solid #ccc; border-radius: 8px; overflow: hidden;">
-                <div style="padding: 40px; text-align: center; color: #666;">
+            <div id="pdf-display" class="pdf-container">
+                <div class="pdf-placeholder">
                     <p>Loading...</p>
                 </div>
             </div>
@@ -256,9 +256,25 @@ Jadwal Pelatihan Calendar Section
 </section>
 
 <style>
-    .timetable-btn.active {
-        background-color: #28353B !important;
+    .timetable-btn.active { background-color: #28353B !important; }
+
+    /* PDF container: responsive, mobile-friendly, Safari touch scroll */
+    .pdf-container {
+        width: 100%;
+        height: 80vh;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+        background: #fff;
     }
+    .pdf-placeholder { padding: 40px; text-align: center; color: #666; }
+    .pdf-embed,
+    #pdf-display iframe,
+    #pdf-display object,
+    #pdf-display embed { width: 100%; height: 100%; display: block; border: 0; }
+
+    @media (max-width: 576px) { .pdf-container { height: 70vh; } }
 </style>
 
 <script>
@@ -278,8 +294,19 @@ Jadwal Pelatihan Calendar Section
             
             if (filePath) {
                 const pdfUrl = "{{ url('storage') }}/" + filePath;
-                document.getElementById('pdf-display').innerHTML = 
-                    '<iframe src="' + pdfUrl + '" width="100%" height="100%" style="border: none;"></iframe>';
+                const zoomParam = '#page=1&zoom=page-width';
+                const safeUrl = pdfUrl + zoomParam;
+
+                // Prefer <object>/<embed> for Safari; keep iframe as fallback within object
+                document.getElementById('pdf-display').innerHTML =
+                    '<object data="' + safeUrl + '" type="application/pdf" class="pdf-embed">' +
+                        '<embed src="' + safeUrl + '" type="application/pdf" class="pdf-embed" />' +
+                        '<iframe src="' + safeUrl + '" class="pdf-embed" scrolling="yes" allow="fullscreen"></iframe>' +
+                        '<div class="pdf-placeholder">' +
+                            '<p>Peramban tidak dapat menampilkan PDF secara langsung.</p>' +
+                            '<p><a href="' + pdfUrl + '" target="_blank" rel="noopener">Buka atau unduh PDF</a></p>' +
+                        '</div>' +
+                    '</object>';
             } else {
                 document.getElementById('pdf-display').innerHTML = 
                     '<div style="padding: 40px; text-align: center; color: #666;"><p>Jadwal pelatihan belum tersedia. Silakan hubungi kami untuk informasi lebih lanjut.</p></div>';
