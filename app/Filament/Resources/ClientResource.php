@@ -12,6 +12,8 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Actions\BulkAction;
+use Illuminate\Database\Eloquent\Collection;
 
 class ClientResource extends Resource
 {
@@ -63,6 +65,13 @@ class ClientResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+                    BulkAction::make('edit')
+                        ->label('Edit Bulk')
+                        ->icon('heroicon-o-pencil-square')
+                        ->action(function (Collection $records) {
+                            $recordIds = $records->pluck('id')->implode(',');
+                            return redirect(route('filament.admin.resources.clients.bulk-edit', ['records' => $recordIds]));
+                        }),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
@@ -81,6 +90,7 @@ class ClientResource extends Resource
             'index' => Pages\ListClients::route('/'),
             'create' => Pages\CreateClient::route('/create'),
             'edit' => Pages\EditClient::route('/{record}/edit'),
+            'bulk-edit' => Pages\BulkEditClients::route('/bulk-edit/{records}'),
         ];
     }
 }
