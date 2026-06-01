@@ -8,6 +8,7 @@ use Filament\Actions;
 use Filament\Forms;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\Page;
 use Illuminate\Database\Eloquent\Collection;
@@ -44,37 +45,41 @@ class BulkEditClients extends Page implements HasForms
         $this->form->fill();
     }
 
-    protected function getFormSchema(): array
+    public function form(Form $form): Form
     {
-        return [
-            Forms\Components\Section::make('Edit Multiple Klien')
-                ->description('Pilih field yang ingin diupdate untuk ' . $this->records->count() . ' klien')
-                ->schema([
-                    Forms\Components\Toggle::make('update_name')
-                        ->label('Update Perusahaan Klien')
-                        ->reactive()
-                        ->default(false),
-                    Forms\Components\Textarea::make('name')
-                        ->label("Perusahaan Klien")
-                        ->autosize()
-                        ->visible(fn (Forms\Get $get) => $get('update_name'))
-                        ->required(fn (Forms\Get $get) => $get('update_name')),
-                    Forms\Components\Toggle::make('update_image')
-                        ->label('Update Logo Klien')
-                        ->reactive()
-                        ->default(false),
-                    Forms\Components\FileUpload::make('image')
-                        ->label('Logo Klien')
-                        ->visible(fn (Forms\Get $get) => $get('update_image'))
-                        ->required(fn (Forms\Get $get) => $get('update_image'))
-                        ->image()
-                        ->directory('client-images')
-                        ->enableOpen()
-                        ->enableDownload()
-                        ->disk('public')
-                        ->maxSize(3072),
-                ]),
-        ];
+        return $form
+            ->schema([
+                Forms\Components\Section::make('Edit Multiple Klien')
+                    ->description('Pilih field yang ingin diupdate untuk ' . $this->records->count() . ' klien')
+                    ->schema([
+                        Forms\Components\Toggle::make('update_name')
+                            ->label('Update Perusahaan Klien')
+                            ->reactive()
+                            ->default(false)
+                            ->live(),
+                        Forms\Components\Textarea::make('name')
+                            ->label("Perusahaan Klien")
+                            ->autosize()
+                            ->visible(fn (Forms\Get $get) => (bool) $get('update_name'))
+                            ->required(fn (Forms\Get $get) => (bool) $get('update_name')),
+                        Forms\Components\Toggle::make('update_image')
+                            ->label('Update Logo Klien')
+                            ->reactive()
+                            ->default(false)
+                            ->live(),
+                        Forms\Components\FileUpload::make('image')
+                            ->label('Logo Klien')
+                            ->visible(fn (Forms\Get $get) => (bool) $get('update_image'))
+                            ->required(fn (Forms\Get $get) => (bool) $get('update_image'))
+                            ->image()
+                            ->directory('client-images')
+                            ->enableOpen()
+                            ->enableDownload()
+                            ->disk('public')
+                            ->maxSize(3072),
+                    ]),
+            ])
+            ->statePath('data');
     }
 
     public function save(): void
@@ -85,7 +90,7 @@ class BulkEditClients extends Page implements HasForms
             $updates = [];
 
             if ($this->data['update_name'] ?? false) {
-                $updates['name'] = $this->data['name'];
+                $updates['name'] = $this->data['name'] ?? null;
             }
 
             if ($this->data['update_image'] ?? false) {
@@ -93,7 +98,7 @@ class BulkEditClients extends Page implements HasForms
                 if ($record->image && \Storage::disk('public')->exists($record->image)) {
                     \Storage::disk('public')->delete($record->image);
                 }
-                $updates['image'] = $this->data['image'];
+                $updates['image'] = $this->data['image'] ?? null;
             }
 
             if (!empty($updates)) {

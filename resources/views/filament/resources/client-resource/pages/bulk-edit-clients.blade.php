@@ -22,7 +22,7 @@
         </div>
 
         <!-- Form -->
-        <form wire:submit="save" class="space-y-6">
+        <form wire:submit.prevent="save" class="space-y-6">
             {{ $this->form }}
 
             <!-- Actions -->
