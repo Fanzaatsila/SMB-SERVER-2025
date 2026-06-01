@@ -19,6 +19,7 @@ class HomeController extends Controller
         try {
             $profile = Profile::all()->first();
             $activities = Activity::all();
+            $cities = City::all();
             $clients = Client::all();
             
             // Filter brochures: hanya yang aktif dan belum melewati end_date atau tidak memiliki tanggal
@@ -28,30 +29,6 @@ class HomeController extends Controller
                     $query->whereNull('end_date')  // Tidak ada tanggal akhir
                         ->orWhere('end_date', '>=', $today);  // Atau tanggal akhir belum lewat
                 })->get();
-            
-            // Get only cities that are assigned to active brochures
-            $citiesWithBrochures = $brochures
-                ->whereNotNull('city_id')
-                ->pluck('city_id')
-                ->unique();
-            
-            $cities = City::whereIn('id', $citiesWithBrochures)
-                ->orWhereDoesntHave('brochures', function ($query) use ($today) {
-                    $query->where('is_active', true)
-                        ->where(function ($q) use ($today) {
-                            $q->whereNull('end_date')
-                              ->orWhere('end_date', '>=', $today);
-                        });
-                })
-                ->get()
-                ->unique('id');
-            
-            // Better approach: get cities that have at least one active brochure
-            $cities = $brochures
-                ->where('is_online', false) // Only offline brochures have cities
-                ->pluck('city')
-                ->unique('id')
-                ->values();
             
             $trainings = Training::with(['trainingType', 'city'])
                 ->whereNotNull('start_date')
