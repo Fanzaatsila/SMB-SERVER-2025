@@ -21,17 +21,19 @@ class HomeController extends Controller
             $activities = Activity::all();
             $clients = Client::all();
             
-            // Filter brochures: hanya yang aktif dan belum melewati end_date atau tidak memiliki tanggal
+            // Filter brochures: hanya yang aktif (is_active = true) dan belum melewati end_date atau tidak memiliki tanggal
             $today = now()->format('Y-m-d');
-            $brochures = Brochure::where('is_active', true)
+            $brochures = Brochure::where('is_active', true) // Hanya brochure yang aktif
                 ->where(function ($query) use ($today) {
                     $query->whereNull('end_date')  // Tidak ada tanggal akhir
                         ->orWhere('end_date', '>=', $today);  // Atau tanggal akhir belum lewat
                 })->get();
             
             // Get only cities that are assigned to active brochures (offline only, and non-null)
+            // Filter tabs hanya menampilkan kota dari brochure yang aktif (is_active = true)
             $cities = $brochures
                 ->where('is_online', false) // Only offline brochures have cities
+                ->where('is_active', true) // Pastikan hanya brochure aktif yang dihitung
                 ->whereNotNull('city_id') // Only brochures with assigned cities
                 ->pluck('city')
                 ->unique('id')
