@@ -12,7 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('brochures', function (Blueprint $table) {
-            $table->boolean('is_active')->default(true)->after('end_date');
+            // Tambahkan start_date dan end_date jika belum ada
+            if (!Schema::hasColumn('brochures', 'start_date')) {
+                $table->date('start_date')->nullable();
+            }
+            if (!Schema::hasColumn('brochures', 'end_date')) {
+                $table->date('end_date')->nullable();
+            }
+            // Tambahkan is_active jika belum ada
+            if (!Schema::hasColumn('brochures', 'is_active')) {
+                $table->boolean('is_active')->default(true);
+            }
         });
     }
 
@@ -22,7 +32,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('brochures', function (Blueprint $table) {
-            $table->dropColumn('is_active');
+            $table->dropColumnIfExists('start_date');
+            $table->dropColumnIfExists('end_date');
+            $table->dropColumnIfExists('is_active');
         });
     }
 };
