@@ -10,8 +10,6 @@ class BrochureController extends Controller
 {    
     public function index() {
         try {
-            $cities = City::all();
-            
             // Filter brochures: hanya yang aktif dan belum melewati end_date atau tidak memiliki tanggal
             $today = now()->format('Y-m-d');
             $brochures = Brochure::where('is_active', true)
@@ -19,6 +17,14 @@ class BrochureController extends Controller
                     $query->whereNull('end_date')  // Tidak ada tanggal akhir
                         ->orWhere('end_date', '>=', $today);  // Atau tanggal akhir belum lewat
                 })->paginate(6);
+
+            // Get only cities that are assigned to active brochures (offline only)
+            $cities = $brochures
+                ->getCollection() // Get the current page collection
+                ->where('is_online', false) // Only offline brochures have cities
+                ->pluck('city')
+                ->unique('id')
+                ->values();
 
             return view('brosur', [
                 'cities' => $cities,
