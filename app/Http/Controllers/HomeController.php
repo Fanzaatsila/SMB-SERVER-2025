@@ -29,26 +29,10 @@ class HomeController extends Controller
                         ->orWhere('end_date', '>=', $today);  // Atau tanggal akhir belum lewat
                 })->get();
             
-            // Get only cities that are assigned to active brochures
-            $citiesWithBrochures = $brochures
-                ->whereNotNull('city_id')
-                ->pluck('city_id')
-                ->unique();
-            
-            $cities = City::whereIn('id', $citiesWithBrochures)
-                ->orWhereDoesntHave('brochures', function ($query) use ($today) {
-                    $query->where('is_active', true)
-                        ->where(function ($q) use ($today) {
-                            $q->whereNull('end_date')
-                              ->orWhere('end_date', '>=', $today);
-                        });
-                })
-                ->get()
-                ->unique('id');
-            
-            // Better approach: get cities that have at least one active brochure
+            // Get only cities that are assigned to active brochures (offline only, and non-null)
             $cities = $brochures
                 ->where('is_online', false) // Only offline brochures have cities
+                ->whereNotNull('city_id') // Only brochures with assigned cities
                 ->pluck('city')
                 ->unique('id')
                 ->values();
