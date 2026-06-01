@@ -26,13 +26,19 @@ class BulkEditClients extends Page implements HasForms
 
     public ?array $data = [];
 
-    public function mount(string $records): void
+    public function mount(): void
     {
-        $recordIds = explode(',', $records);
+        $ids = request()->query('ids');
+        
+        if (!$ids) {
+            abort(404, 'No records selected');
+        }
+
+        $recordIds = explode(',', $ids);
         $this->records = Client::whereIn('id', $recordIds)->get();
 
         if ($this->records->isEmpty()) {
-            abort(404);
+            abort(404, 'Records not found');
         }
 
         $this->form->fill();

@@ -70,7 +70,7 @@ class ClientResource extends Resource
                         ->icon('heroicon-o-pencil-square')
                         ->action(function (Collection $records) {
                             $recordIds = $records->pluck('id')->implode(',');
-                            return redirect(route('filament.admin.resources.clients.bulk-edit', ['records' => $recordIds]));
+                            return redirect(ClientResource::getUrl('bulk-edit') . '?ids=' . $recordIds);
                         }),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
@@ -90,7 +90,7 @@ class ClientResource extends Resource
             'index' => Pages\ListClients::route('/'),
             'create' => Pages\CreateClient::route('/create'),
             'edit' => Pages\EditClient::route('/{record}/edit'),
-            'bulk-edit' => Pages\BulkEditClients::route('/bulk-edit/{records}'),
+            'bulk-edit' => Pages\BulkEditClients::route('/bulk-edit'),
         ];
     }
 }
