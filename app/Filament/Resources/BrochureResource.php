@@ -109,7 +109,7 @@ class BrochureResource extends Resource
             ->actions([
                 Tables\Actions\Action::make('toggle')
                     ->label(fn (Brochure $record) => $record->is_active ? 'Nonaktifkan' : 'Aktifkan')
-                    ->icon(fn (Brochure $record) => $record->is_active ? 'heroicon-o-x-mark' : 'heroicon-o-check-mark')
+                    ->icon(fn (Brochure $record) => $record->is_active ? 'heroicon-o-x-mark' : 'heroicon-o-check')
                     ->color(fn (Brochure $record) => $record->is_active ? 'danger' : 'success')
                     ->action(fn (Brochure $record) => $record->update(['is_active' => !$record->is_active])),
                 Tables\Actions\EditAction::make(),
@@ -118,7 +118,7 @@ class BrochureResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     BulkAction::make('activate')
                         ->label('Aktifkan')
-                        ->icon('heroicon-o-check-mark')
+                        ->icon('heroicon-o-check')
                         ->color('success')
                         ->action(fn (Collection $records) => $records->each->update(['is_active' => true])),
                     BulkAction::make('deactivate')
