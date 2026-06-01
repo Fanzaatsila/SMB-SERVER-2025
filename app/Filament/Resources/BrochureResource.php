@@ -13,6 +13,8 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Models\City;
+use Filament\Tables\Actions\BulkAction;
+use Illuminate\Database\Eloquent\Collection;
 
 class BrochureResource extends Resource
 {
@@ -39,6 +41,16 @@ class BrochureResource extends Resource
                     ->required()
                     ->label("Sifat Kegiatan")
                     ->default(1),
+                Forms\Components\DatePicker::make('start_date')
+                    ->format('Y-m-d')
+                    ->displayFormat('Y-m-d')
+                    ->native(false)
+                    ->label("Tanggal Awal"),
+                Forms\Components\DatePicker::make('end_date')
+                    ->format('Y-m-d')
+                    ->displayFormat('Y-m-d')
+                    ->native(false)
+                    ->label("Tanggal Akhir"),
                 Forms\Components\FileUpload::make('image')
                     ->label('Brosur')
                     ->required()
@@ -60,6 +72,9 @@ class BrochureResource extends Resource
                             $set('is_online', 0);
                         }
                     }),
+                Forms\Components\Toggle::make('is_active')
+                    ->label('Aktif')
+                    ->default(true),
             ]);
     }
 
@@ -74,18 +89,43 @@ class BrochureResource extends Resource
                     ->searchable()
                     ->formatStateUsing(fn ($state) => $state ? 'Online' : 'Offline')
                     ->label("Sifat Brosur"),
+                Tables\Columns\TextColumn::make('start_date')
+                    ->searchable()
+                    ->label("Tanggal Awal"),
+                Tables\Columns\TextColumn::make('end_date')
+                    ->searchable()
+                    ->label("Tanggal Akhir"),
                 Tables\Columns\ImageColumn::make('image')
                     ->label('Foto Kegiatan')
                     ->disk('public'),
+                Tables\Columns\BooleanColumn::make('is_active')
+                    ->label('Status')
+                    ->sortable()
+                    ->toggleable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
+                Tables\Actions\Action::make('toggle')
+                    ->label(fn (Brochure $record) => $record->is_active ? 'Nonaktifkan' : 'Aktifkan')
+                    ->icon(fn (Brochure $record) => $record->is_active ? 'heroicon-o-x-mark' : 'heroicon-o-check-mark')
+                    ->color(fn (Brochure $record) => $record->is_active ? 'danger' : 'success')
+                    ->action(fn (Brochure $record) => $record->update(['is_active' => !$record->is_active])),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+                    BulkAction::make('activate')
+                        ->label('Aktifkan')
+                        ->icon('heroicon-o-check-mark')
+                        ->color('success')
+                        ->action(fn (Collection $records) => $records->each->update(['is_active' => true])),
+                    BulkAction::make('deactivate')
+                        ->label('Nonaktifkan')
+                        ->icon('heroicon-o-x-mark')
+                        ->color('danger')
+                        ->action(fn (Collection $records) => $records->each->update(['is_active' => false])),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);

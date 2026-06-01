@@ -21,7 +21,15 @@ class HomeController extends Controller
             $activities = Activity::all();
             $cities = City::all();
             $clients = Client::all();
-            $brochures = Brochure::all();
+            
+            // Filter brochures: hanya yang aktif dan belum melewati end_date atau tidak memiliki tanggal
+            $today = now()->format('Y-m-d');
+            $brochures = Brochure::where('is_active', true)
+                ->where(function ($query) use ($today) {
+                    $query->whereNull('end_date')  // Tidak ada tanggal akhir
+                        ->orWhere('end_date', '>=', $today);  // Atau tanggal akhir belum lewat
+                })->get();
+            
             $trainings = Training::with(['trainingType', 'city'])
                 ->whereNotNull('start_date')
                 ->orderBy('start_date', 'asc')

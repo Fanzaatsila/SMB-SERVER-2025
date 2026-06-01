@@ -13,6 +13,15 @@ class Brochure extends Model
         'image',
         'is_online',
         'city_id',
+        'start_date',
+        'end_date',
+        'is_active',
+    ];
+
+    protected $casts = [
+        'start_date' => 'date:Y-m-d',
+        'end_date' => 'date:Y-m-d',
+        'is_active' => 'boolean',
     ];
 
     public function city(): BelongsTo {

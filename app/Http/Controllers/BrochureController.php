@@ -11,7 +11,14 @@ class BrochureController extends Controller
     public function index() {
         try {
             $cities = City::all();
-            $brochures = Brochure::paginate(6);
+            
+            // Filter brochures: hanya yang aktif dan belum melewati end_date atau tidak memiliki tanggal
+            $today = now()->format('Y-m-d');
+            $brochures = Brochure::where('is_active', true)
+                ->where(function ($query) use ($today) {
+                    $query->whereNull('end_date')  // Tidak ada tanggal akhir
+                        ->orWhere('end_date', '>=', $today);  // Atau tanggal akhir belum lewat
+                })->paginate(6);
 
             return view('brosur', [
                 'cities' => $cities,
