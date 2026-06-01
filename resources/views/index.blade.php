@@ -432,11 +432,13 @@ Brochure Section
                              data-city="{{ $brochure->city_id }}" 
                              data-online="{{ $brochure->is_online }}">
                             <div class="card shadow-sm h-100 border-0 rounded-lg overflow-hidden hover:shadow-xl transition-all">
-                                <img src="{{ url('storage/' . $brochure->image) }}" 
-                                     class="card-img-top" 
-                                     alt="{{ $brochure->title }}"
-                                     style="height: 400px; object-fit: cover; cursor: pointer;"
-                                     onclick="openBrochureModal('{{ url('storage/' . $brochure->image) }}', '{{ $brochure->title }}')">
+                                <div style="height: 400px; background: linear-gradient(135deg, #00B2D6 0%, #0096b8 100%); display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                                    <img src="{{ url('storage/' . $brochure->image) }}" 
+                                         class="card-img-top" 
+                                         alt="{{ $brochure->title }}"
+                                         style="max-width: 100%; max-height: 100%; width: auto; height: auto; cursor: pointer; object-fit: contain;"
+                                         onclick="openBrochureModal('{{ url('storage/' . $brochure->image) }}', '{{ $brochure->title }}')">
+                                </div>
                                 <div class="card-body text-center p-3">
                                     <h5 class="card-title mb-2 font-weight-bold" style="font-size: 1rem;">{{ $brochure->title }}</h5>
                                     @if($brochure->is_online)
