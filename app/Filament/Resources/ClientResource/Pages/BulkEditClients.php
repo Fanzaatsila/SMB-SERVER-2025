@@ -77,7 +77,7 @@ class BulkEditClients extends Page implements HasForms
                             ->enableDownload()
                             ->disk('public')
                             ->maxSize(3072)
-                            ->single(),
+                            ->maxFiles(1),
                     ]),
             ])
             ->statePath('data');
