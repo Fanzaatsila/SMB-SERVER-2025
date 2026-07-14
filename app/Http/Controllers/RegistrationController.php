@@ -10,9 +10,9 @@ class RegistrationController extends Controller
 {
     public function index()
     {
-        // Ambil semua pelatihan dengan relasi training type untuk filter dinamis
-        $trainings = Training::with('trainingType')
-            ->select('id', 'title', 'training_type_id')
+        // Ambil semua pelatihan dengan relasi training type dan city untuk filter dinamis
+        $trainings = Training::with(['trainingType', 'city'])
+            ->select('id', 'title', 'training_type_id', 'city_id', 'start_date', 'end_date')
             ->orderBy('title', 'asc')
             ->get();
         

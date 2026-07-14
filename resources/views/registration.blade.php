@@ -461,6 +461,22 @@
         typeMapping[type.id] = type.type;
     });
     
+    function formatDate(dateStr) {
+        if (!dateStr) return '';
+        const datePart = dateStr.split('T')[0];
+        const parts = datePart.split('-');
+        if (parts.length === 3) {
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+            const year = parts[0];
+            const monthIdx = parseInt(parts[1], 10) - 1;
+            const day = parseInt(parts[2], 10);
+            if (monthIdx >= 0 && monthIdx < 12) {
+                return `${day} ${months[monthIdx]} ${year}`;
+            }
+        }
+        return dateStr;
+    }
+
     // Filter jenis pelatihan berdasarkan sertifikasi yang dipilih
     document.getElementById('sertifikasi_pelatihan').addEventListener('change', function() {
         const selectedType = this.value;
@@ -483,8 +499,15 @@
             if (filteredTrainings.length > 0) {
                 filteredTrainings.forEach(training => {
                     const option = document.createElement('option');
-                    option.value = training.title;
-                    option.textContent = training.title;
+                    
+                    const start = formatDate(training.start_date);
+                    const end = formatDate(training.end_date);
+                    const city = training.city ? training.city.name : '';
+                    
+                    const label = `${training.title} (${start} - ${end} - ${city})`;
+                    
+                    option.value = label;
+                    option.textContent = label;
                     jenisSelect.appendChild(option);
                 });
             } else {
