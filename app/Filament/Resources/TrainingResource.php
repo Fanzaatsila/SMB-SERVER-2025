@@ -165,7 +165,7 @@ class TrainingResource extends Resource
                     ->label('Download Template')
                     ->icon('heroicon-o-arrow-down-tray')
                     ->color('info')
-                    ->url(fn () => asset('templates/template_pelatihan.xlsx'))
+                    ->url(fn () => asset('storage/templates/template_pelatihan.xlsx'))
                     ->openUrlInNewTab(),
             ]);
     }
