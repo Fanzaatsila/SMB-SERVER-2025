@@ -31,6 +31,11 @@ class GenerateTrainingTypeTemplate extends Command
         
         Excel::store(new TrainingTypeTemplateExport(), 'templates/template_jenis_pelatihan.xlsx', 'public');
         
+        if (!file_exists(public_path('templates'))) {
+            mkdir(public_path('templates'), 0755, true);
+        }
+        copy(storage_path('app/public/templates/template_jenis_pelatihan.xlsx'), $path);
+        
         $this->info('Template berhasil dibuat di: ' . $path);
         $this->info('Kolom yang tersedia:');
         $this->info('  - jenis_pelatihan: Nama Jenis Pelatihan (wajib)');
