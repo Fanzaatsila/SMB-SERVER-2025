@@ -187,6 +187,8 @@
         .section-title {
             font-size: 18px;
         }
+    }
+
     /* Searchable Select Custom Styles */
     .searchable-select-container {
         position: relative;
