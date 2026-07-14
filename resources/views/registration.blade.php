@@ -454,6 +454,8 @@
     // Data pelatihan dari server
     const trainingsData = @json($trainings);
     const trainingTypesData = @json($trainingTypes);
+    console.log('Trainings Data:', trainingsData);
+    console.log('Training Types Data:', trainingTypesData);
     
     // Create mapping: training_type_id => type name
     const typeMapping = {};
