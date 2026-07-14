@@ -187,6 +187,196 @@
         .section-title {
             font-size: 18px;
         }
+    /* Searchable Select Custom Styles */
+    .searchable-select-container {
+        position: relative;
+        width: 100%;
+        user-select: none;
+    }
+
+    .searchable-select-trigger {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 14px;
+        background: white;
+        color: #28353B;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    body.dark-mode .searchable-select-trigger {
+        background: #1a1a1a;
+        border-color: #444;
+        color: #e0e0e0;
+    }
+
+    .searchable-select-container.open .searchable-select-trigger {
+        border-color: #00B2D6;
+        box-shadow: 0 0 0 3px rgba(0, 178, 214, 0.1);
+    }
+
+    .searchable-select-trigger.is-invalid {
+        border-color: #dc3545;
+    }
+
+    .searchable-select-trigger.disabled {
+        background: #e9ecef;
+        cursor: not-allowed;
+        opacity: 0.65;
+    }
+
+    body.dark-mode .searchable-select-trigger.disabled {
+        background: #2b2b2b;
+    }
+
+    .searchable-select-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        margin-top: 5px;
+        background: white;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        z-index: 1000;
+        display: none;
+        overflow: hidden;
+    }
+
+    body.dark-mode .searchable-select-dropdown {
+        background: #1a1a1a;
+        border-color: #444;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+
+    .searchable-select-container.open .searchable-select-dropdown {
+        display: block;
+    }
+
+    .searchable-select-search-wrapper {
+        padding: 8px 10px;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    body.dark-mode .searchable-select-search-wrapper {
+        border-bottom-color: #444;
+    }
+
+    .searchable-select-search {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+        font-size: 13px;
+        outline: none;
+        transition: border-color 0.2s;
+    }
+
+    body.dark-mode .searchable-select-search {
+        background: #2b2b2b;
+        border-color: #444;
+        color: #e0e0e0;
+    }
+
+    .searchable-select-search:focus {
+        border-color: #00B2D6;
+    }
+
+    .searchable-select-options {
+        max-height: 220px;
+        overflow-y: auto;
+    }
+
+    .searchable-select-option {
+        padding: 10px 15px;
+        font-size: 14px;
+        color: #28353B;
+        cursor: pointer;
+        transition: background 0.2s;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    body.dark-mode .searchable-select-option {
+        color: #e0e0e0;
+    }
+
+    .searchable-select-option:hover {
+        background: #f1f3f5;
+    }
+
+    body.dark-mode .searchable-select-option:hover {
+        background: #2b2b2b;
+    }
+
+    .searchable-select-option.selected {
+        background: #00B2D6;
+        color: white;
+    }
+
+    .searchable-select-option.no-results {
+        color: #888;
+        cursor: default;
+        text-align: center;
+        padding: 15px;
+    }
+
+    /* Mobile specific style for bottom sheet feel */
+    @media (max-width: 576px) {
+        .searchable-select-container.open .searchable-select-dropdown {
+            position: fixed;
+            top: auto;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: 0;
+            border-radius: 20px 20px 0 0;
+            border: none;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.15);
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        body.dark-mode .searchable-select-container.open .searchable-select-dropdown {
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.6);
+        }
+
+        .searchable-select-options {
+            max-height: none;
+            flex-grow: 1;
+            overflow-y: auto;
+            padding-bottom: 20px;
+        }
+
+        .searchable-select-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            display: none;
+            backdrop-filter: blur(2px);
+        }
+
+        .searchable-select-container.open .searchable-select-overlay {
+            display: block;
+        }
+    }
+
+    @keyframes slideUp {
+        from { transform: translateY(100%); }
+        to { transform: translateY(0); }
     }
 </style>
 
@@ -563,6 +753,200 @@
             value = value.substr(0, 5);
         }
         e.target.value = value;
+    });
+
+    // Make dropdowns searchable
+    function makeSelectSearchable(selectId, placeholderText) {
+        const select = document.getElementById(selectId);
+        if (!select) return;
+
+        // Hide original select
+        select.style.display = 'none';
+
+        // Create container
+        const container = document.createElement('div');
+        container.className = 'searchable-select-container';
+        container.id = 'searchable-' + selectId;
+
+        // Create trigger
+        const trigger = document.createElement('div');
+        trigger.className = 'searchable-select-trigger';
+        if (select.disabled) trigger.classList.add('disabled');
+        if (select.classList.contains('is-invalid')) trigger.classList.add('is-invalid');
+
+        const triggerText = document.createElement('span');
+        triggerText.className = 'searchable-select-text';
+        
+        // Use selected option text or placeholder
+        const selectedOpt = select.options[select.selectedIndex];
+        triggerText.textContent = (selectedOpt && selectedOpt.value) ? selectedOpt.text : placeholderText;
+
+        const triggerIcon = document.createElement('span');
+        triggerIcon.innerHTML = '&#9662;'; // Down arrow
+        triggerIcon.style.fontSize = '12px';
+        triggerIcon.style.color = '#888';
+
+        trigger.appendChild(triggerText);
+        trigger.appendChild(triggerIcon);
+        container.appendChild(trigger);
+
+        // Create mobile overlay
+        const overlay = document.createElement('div');
+        overlay.className = 'searchable-select-overlay';
+        container.appendChild(overlay);
+
+        // Create dropdown
+        const dropdown = document.createElement('div');
+        dropdown.className = 'searchable-select-dropdown';
+
+        // Create search wrapper
+        const searchWrapper = document.createElement('div');
+        searchWrapper.className = 'searchable-select-search-wrapper';
+
+        const searchInput = document.createElement('input');
+        searchInput.type = 'text';
+        searchInput.className = 'searchable-select-search';
+        searchInput.placeholder = 'Cari...';
+        searchWrapper.appendChild(searchInput);
+        dropdown.appendChild(searchWrapper);
+
+        // Create options list container
+        const optionsContainer = document.createElement('div');
+        optionsContainer.className = 'searchable-select-options';
+        dropdown.appendChild(optionsContainer);
+
+        container.appendChild(dropdown);
+        select.parentNode.insertBefore(container, select.nextSibling);
+
+        // Function to render custom options
+        function renderOptions(filterText = '') {
+            optionsContainer.innerHTML = '';
+            const searchVal = filterText.toLowerCase();
+            let matchCount = 0;
+
+            Array.from(select.options).forEach((opt, index) => {
+                // Skip placeholder option if it has empty value
+                if (opt.value === "" && index === 0) return;
+
+                const text = opt.text;
+                if (text.toLowerCase().includes(searchVal)) {
+                    matchCount++;
+                    const optDiv = document.createElement('div');
+                    optDiv.className = 'searchable-select-option';
+                    
+                    const isSelected = select.value === opt.value;
+                    if (isSelected) {
+                        optDiv.classList.add('selected');
+                    }
+                    
+                    optDiv.textContent = text;
+                    optDiv.title = text;
+                    optDiv.addEventListener('click', () => {
+                        select.value = opt.value;
+                        // Trigger native change event
+                        select.dispatchEvent(new Event('change'));
+                        closeDropdown();
+                    });
+                    optionsContainer.appendChild(optDiv);
+                }
+            });
+
+            if (matchCount === 0) {
+                const noResults = document.createElement('div');
+                noResults.className = 'searchable-select-option no-results';
+                noResults.textContent = 'Tidak ditemukan hasil';
+                optionsContainer.appendChild(noResults);
+            }
+        }
+
+        // Toggle dropdown
+        function toggleDropdown() {
+            if (select.disabled) return;
+            const isOpen = container.classList.contains('open');
+            // Close other searchable selects
+            document.querySelectorAll('.searchable-select-container').forEach(c => {
+                if (c !== container) {
+                    c.classList.remove('open');
+                }
+            });
+            
+            if (isOpen) {
+                closeDropdown();
+            } else {
+                container.classList.add('open');
+                searchInput.value = '';
+                renderOptions();
+                setTimeout(() => searchInput.focus(), 50);
+            }
+        }
+
+        function closeDropdown() {
+            container.classList.remove('open');
+        }
+
+        // Event listeners
+        trigger.addEventListener('click', toggleDropdown);
+        overlay.addEventListener('click', closeDropdown);
+
+        searchInput.addEventListener('input', (e) => {
+            renderOptions(e.target.value);
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!container.contains(e.target) && !e.target.closest('.searchable-select-container')) {
+                closeDropdown();
+            }
+        });
+
+        // MutationObserver to watch original select changes
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.type === 'childList') {
+                    const selOpt = select.options[select.selectedIndex];
+                    triggerText.textContent = (selOpt && selOpt.value) ? selOpt.text : placeholderText;
+                    renderOptions();
+                } else if (mutation.type === 'attributes') {
+                    if (mutation.attributeName === 'disabled') {
+                        if (select.disabled) {
+                            trigger.classList.add('disabled');
+                            closeDropdown();
+                        } else {
+                            trigger.classList.remove('disabled');
+                        }
+                    }
+                    if (mutation.attributeName === 'class') {
+                        if (select.classList.contains('is-invalid')) {
+                            trigger.classList.add('is-invalid');
+                        } else {
+                            trigger.classList.remove('is-invalid');
+                        }
+                    }
+                }
+            });
+        });
+
+        observer.observe(select, {
+            childList: true,
+            attributes: true,
+            attributeFilter: ['disabled', 'class']
+        });
+
+        // Sync on change event
+        select.addEventListener('change', () => {
+            const selOpt = select.options[select.selectedIndex];
+            triggerText.textContent = (selOpt && selOpt.value) ? selOpt.text : placeholderText;
+            renderOptions();
+        });
+
+        // Initial render
+        renderOptions();
+    }
+
+    // Initialize searchable selects on DOMContentLoaded
+    document.addEventListener('DOMContentLoaded', function() {
+        makeSelectSearchable('sertifikasi_pelatihan', 'Pilih Sertifikasi');
+        makeSelectSearchable('jenis_pelatihan', 'Pilih Jenis Pelatihan');
     });
 </script>
 @endsection
