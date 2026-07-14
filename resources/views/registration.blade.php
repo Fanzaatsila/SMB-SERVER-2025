@@ -504,7 +504,22 @@
                     const end = formatDate(training.end_date);
                     const city = training.city ? training.city.name : '';
                     
-                    const label = `${training.title} (${start} - ${end} - ${city})`;
+                    let label = training.title;
+                    const details = [];
+                    if (start && end) {
+                        details.push(`${start} - ${end}`);
+                    } else if (start) {
+                        details.push(start);
+                    } else if (end) {
+                        details.push(end);
+                    }
+                    if (city) {
+                        details.push(city);
+                    }
+                    
+                    if (details.length > 0) {
+                        label += ` (${details.join(' - ')})`;
+                    }
                     
                     option.value = label;
                     option.textContent = label;
