@@ -40,6 +40,9 @@ class TrainingTypeResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('id')
+                    ->sortable()
+                    ->label("ID"),
                 Tables\Columns\TextColumn::make('type')
                     ->searchable()
                     ->label("Jenis Pelatihan"),
