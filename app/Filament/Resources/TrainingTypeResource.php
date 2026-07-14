@@ -119,8 +119,9 @@ class TrainingTypeResource extends Resource
                     ->label('Download Template')
                     ->icon('heroicon-o-arrow-down-tray')
                     ->color('info')
-                    ->url(fn () => asset('templates/template_jenis_pelatihan.xlsx'))
-                    ->openUrlInNewTab(),
+                    ->action(function () {
+                        return Excel::download(new \App\Exports\TrainingTypeTemplateExport(), 'template_jenis_pelatihan.xlsx');
+                    }),
             ]);
     }
 
