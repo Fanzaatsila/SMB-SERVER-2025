@@ -14,9 +14,14 @@ class Activity extends Model
         'image',
         'is_online',
         'city_id',
+        'training_id',
     ];
 
     public function city(): BelongsTo {
         return $this->belongsTo(City::class);
+    }
+
+    public function training(): BelongsTo {
+        return $this->belongsTo(Training::class);
     }
 }
