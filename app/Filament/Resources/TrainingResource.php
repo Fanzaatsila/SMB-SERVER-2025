@@ -67,12 +67,13 @@ class TrainingResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn (Builder $query) => $query->with(['city', 'trainingType']))
             ->columns([
                 Tables\Columns\TextColumn::make('title')
-                    ->searchable()
+                    // covers both title & description via the fulltext index; description column below stays non-searchable to avoid a duplicate LIKE clause
+                    ->searchable(query: fn (Builder $query, string $search): Builder => $query->whereFullText(['title', 'description'], $search))
                     ->label("Judul Pelatihan"),
                 Tables\Columns\TextColumn::make('description')
-                    ->searchable()
                     ->label("Deskripsi"),
                 Tables\Columns\TextColumn::make('start_date')
                     ->searchable()
